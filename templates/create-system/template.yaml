@@ -57,6 +57,7 @@ spec:
           owner: ${{ parameters.owner }}
           dependsOn: ${{ each.value }}
           repoUrl: ${{ parameters.repoUrl }}
+          name: ${{ each.value.name }}
 
     - id: log
       name: Log file content to console
