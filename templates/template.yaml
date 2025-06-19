@@ -1,8 +1,0 @@
-apiVersion: scaffolder.backstage.io/v1beta3
-kind: Template
-metadata:
-  name: my-template
-spec:
-  type: service
-  owner: guest
-  # url: https://github.com/idosag/templates/create-system
