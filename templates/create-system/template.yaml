@@ -61,7 +61,7 @@ spec:
       name: Log file content to console
       action: debug:log
       input:
-        message: {{ readFile /catalog-info.yaml }}
+        message: "{{ readFile '/catalog-info.yaml' }}"
 
     # - id: register
     #   name: Register with Backstage
