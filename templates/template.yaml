@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: Template
+metadata:
+  name: my-template
+spec:
+  type: service
+  owner: my-team
+  url: https://github.com/idosag/templates/create-system
