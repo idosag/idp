@@ -62,8 +62,7 @@ spec:
       action: debug:log
       input:
         message: "{{ readFile '/catalog-info.yaml' }}"
-        listWorkspace:
-          with-contents: true
+        listWorkspace: "with-contents"
 
     # - id: register
     #   name: Register with Backstage
