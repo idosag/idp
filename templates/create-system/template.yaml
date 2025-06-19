@@ -59,7 +59,7 @@ spec:
 
     - id: log
       name: Log file content to console
-      action: backstage/actions/log
+      action: debug:log
       input:
         message: "Content of catalog"
         content: |
