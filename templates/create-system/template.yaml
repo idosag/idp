@@ -1,0 +1,70 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: create-system
+  title: Create System with Dependencies
+  description: Creates a new system and its dependencies in the Backstage catalog.
+spec:
+  owner: platform-team
+  type: service
+
+  parameters:
+    - title: System Information
+      required:
+        - systemName
+        - owner
+        - dependsOn
+      properties:
+        systemName:
+          type: string
+          title: System Name
+        owner:
+          type: string
+          title: Owner
+          description: Owner of the system
+        dependsOn:
+          type: array
+          title: Dependencies
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              kind:
+                type: string
+                enum: [Component, API, Resource]
+              type:
+                type: string
+                title: Component Type
+                default: service
+
+    - title: Repository Information
+      properties:
+        repoUrl:
+          type: string
+          title: Git Repository URL
+          description: (Optional) Link to repo, if applicable
+
+  steps:
+    - id: fetch-template
+      name: Fetch Skeleton
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          systemName: ${{ parameters.systemName }}
+          owner: ${{ parameters.owner }}
+          dependsOn: ${{ parameters.dependsOn }}
+          repoUrl: ${{ parameters.repoUrl }}
+
+    - id: register
+      name: Register with Backstage
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ parameters.repoUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+  output:
+    links:
+      - title: View in catalog
+        url: 'catalog/default/system/${{ parameters.systemName }}'

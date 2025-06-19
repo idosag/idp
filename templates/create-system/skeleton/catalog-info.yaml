@@ -1,0 +1,23 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: ${{ values.systemName }}
+  title: ${{ values.systemName }}
+  description: System created via Backstage template
+spec:
+  owner: ${{ values.owner }}
+
+---
+{{#each values.dependsOn}}
+apiVersion: backstage.io/v1alpha1
+kind: {{kind}}
+metadata:
+  name: {{name}}
+  title: {{name}}
+  description: Created as a dependency of ${{values.systemName}}
+spec:
+  type: {{type}}
+  owner: ${{values.owner}}
+  system: ${{values.systemName}}
+---
+{{/each}}
