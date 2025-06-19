@@ -57,11 +57,13 @@ spec:
           dependsOn: ${{ parameters.dependsOn }}
           repoUrl: ${{ parameters.repoUrl }}
 
-    - id: logg
+    - id: log
       name: Log file content to console
       action: debug:log
       input:
         message: "{{ readFile '/catalog-info.yaml' }}"
+        listWorkspace:
+          with-contents: true
 
     # - id: register
     #   name: Register with Backstage
