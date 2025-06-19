@@ -4,5 +4,5 @@ metadata:
   name: my-template
 spec:
   type: service
-  owner: my-team
+  owner: guest
   # url: https://github.com/idosag/templates/create-system
