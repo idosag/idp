@@ -57,7 +57,7 @@ spec:
           dependsOn: ${{ parameters.dependsOn }}
           repoUrl: ${{ parameters.repoUrl }}
 
-    - id: log
+    - id: logg
       name: Log file content to console
       action: debug:log
       input:
