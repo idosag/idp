@@ -57,20 +57,20 @@ spec:
           dependsOn: ${{ parameters.dependsOn }}
           repoUrl: ${{ parameters.repoUrl }}
 
-    - id: publish
-      name: Publish
-      action: publish:github
+    - id: log
+      name: Log file content to console
+      action: backstage/actions/log
       input:
-        allowedHosts: ["github.com"]
-        description: This is ${{ parameters.name }}
-        repoUrl: ${{ parameters.repoUrl }}
+        message: "Content of catalog"
+        content: |
+          {{ readFile "/catalog-info.yaml" }}
 
-    - id: register
-      name: Register with Backstage
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ parameters.repoUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
+    # - id: register
+    #   name: Register with Backstage
+    #   action: catalog:register
+    #   input:
+    #     repoContentsUrl: ${{ parameters.repoUrl }}
+    #     catalogInfoPath: '/catalog-info.yaml'
 
   output:
     links:
