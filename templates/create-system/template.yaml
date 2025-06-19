@@ -49,12 +49,13 @@ spec:
     - id: fetch-template
       name: Fetch Skeleton
       action: fetch:template
+      each: ${{ parameters.dependsOn }}
       input:
         url: ./skeleton
         values:
           systemName: ${{ parameters.systemName }}
           owner: ${{ parameters.owner }}
-          dependsOn: ${{ parameters.dependsOn }}
+          dependsOn: ${{ each.value }}
           repoUrl: ${{ parameters.repoUrl }}
 
     - id: log
