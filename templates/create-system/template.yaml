@@ -1,51 +1,70 @@
-
 apiVersion: scaffolder.backstage.io/v1beta3
-# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
 kind: Template
 metadata:
-  name: generated-example-template
-  title: Scaffolder Example Template
-  description: An example template for the scaffolder
+  name: create-system
+  title: Create System with Dependencies
+  description: Creates a new system and its dependencies in the Backstage catalog.
 spec:
-  owner: user:guest
+  owner: platform-team
   type: service
-  # These parameters are used to generate the input form in the frontend, and are
-  # used to gather input data for the execution of the template.
+
   parameters:
-    - title: Fill in some steps
+    - title: System Information
       required:
-        - name
+        - systemName
+        - owner
+        - dependsOn
       properties:
-        name:
-          title: Name
+        systemName:
           type: string
-          description: Unique name of the component
+          title: System Name
         owner:
-          title: Owner
           type: string
-          description: Owner of the component
-          ui:field: OwnerPicker
-          ui:options:
-            catalogFilter:
-              kind: Group
-    - title: Choose a location
-      required:
-        - repoUrl
+          title: Owner
+          description: Owner of the system
+        dependsOn:
+          type: array
+          title: Dependencies
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              kind:
+                type: string
+                enum: [Component, API, Resource]
+              type:
+                type: string
+                title: Component Type
+                default: service
+
+    - title: Repository Information
       properties:
         repoUrl:
-          title: Repository Location
           type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - github.com
+          title: Git Repository URL
+          description: (Optional) Link to repo, if applicable
+
   steps:
-    - id: fetch-base
-      name: Fetch Base
+    - id: fetch-template
+      name: Fetch Skeleton
       action: fetch:template
       input:
         url: ./skeleton
         values:
-          name: ${{parameters.name}}
-          owner: ${{parameters.owner}}
-          destination: ${{ parameters.repoUrl | parseRepoUrl }}
+          systemName: ${{ parameters.systemName }}
+          owner: ${{ parameters.owner }}
+          dependsOn: ${{ parameters.dependsOn }}
+          repoUrl: ${{ parameters.repoUrl }}
+
+    - id: register
+      name: Register with Backstage
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ parameters.repoUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+  output:
+    links:
+      - title: View in catalog
+        url: 'catalog/default/system/${{ parameters.systemName }}'
